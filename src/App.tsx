@@ -1,8 +1,13 @@
+import React from 'react';
+import { Provider } from 'react-redux';
+import { store } from './store/store';
+import { Game } from './components/Game';
+
 function App() {
   return (
-    <div>
-      <h1>Hello World</h1>
-    </div>
+    <Provider store={store}>
+      <Game />
+    </Provider>
   );
 }
 

@@ -3,11 +3,11 @@ import '../setupTests';
 import { Card } from '../components/Card';
 import { CardData } from '../types/game';
 
-describe('App init test sample', () => {
+describe('Card Component', () => {
   const mockCard: CardData = {
     id: 1,
     value: 'A',
-    state: 'revealed',
+    state: 'hidden',
     position: 0,
   };
 
@@ -17,10 +17,10 @@ describe('App init test sample', () => {
     mockOnClick.mockClear();
   });
 
-  it('renders correctly App component', () => {
-    render(<Card card={mockCard} disabled={false} onCardClick={mockOnClick} />);
+  it('renders correctly in hidden state', () => {
+    render(<Card card={mockCard} onCardClick={mockOnClick} disabled={false} />);
     const button = screen.getByRole('button');
-    expect(button).toHaveTextContent('A');
-    expect(button).toHaveClass('bg-white');
+    expect(button).toHaveTextContent('?');
+    expect(button).toHaveClass('bg-blue-500');
   });
 });
