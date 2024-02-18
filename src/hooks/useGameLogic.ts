@@ -14,7 +14,6 @@ export const useGameLogic = () => {
     dispatch(initializeGame(initialCards));
   }, [dispatch]);
 
-
   const handleCardClick = () => {
     // TODO: to be add
   };

@@ -1,6 +1,8 @@
 import React from 'react';
 import { CardData, BoardSize } from '../types/game';
 import Board from './Board';
+import ResetButton from './ResetButton';
+import ScorePanel from './ScorePanel';
 
 interface GameLayoutProps {
   cards: CardData[];
@@ -23,13 +25,15 @@ export const GameLayout: React.FC<GameLayoutProps> = ({
             <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
               <div className="flex justify-between items-center mb-6">
                 <h1 className="text-2xl font-bold text-gray-900">Memory Game</h1>
+                <ResetButton />
               </div>
+              <ScorePanel />
               <Board
                 {...{
                   cards,
                   boardSize,
                   onCardClick,
-                  disabledCards
+                  disabledCards,
                 }}
               />
             </div>

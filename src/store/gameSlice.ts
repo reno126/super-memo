@@ -17,13 +17,27 @@ const initialState: GameState = {
   boardSize: initialBoardSize,
 };
 
+const cardActions = {
+  shuffle: (cards: CardData[]): CardData[] => {
+    const shuffled = cards.map((card, index) => ({ ...card, position: index }));
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [
+        { ...shuffled[j], position: i },
+        { ...shuffled[i], position: j },
+      ];
+    }
+    return shuffled;
+  },
+};
+
 export const gameSlice = createSlice({
   name: 'game',
   initialState,
   reducers: {
     initializeGame: (_state, action: PayloadAction<CardData[]>) => ({
       ...initialState,
-      cards: action.payload,
+      cards: cardActions.shuffle(action.payload),
     }),
 
     flipCard: () => {
@@ -38,8 +52,9 @@ export const gameSlice = createSlice({
       // TODO: to be add
     },
 
-    resetGame: () => ({
+    resetGame: state => ({
       ...initialState,
+      cards: cardActions.shuffle(state.cards.map(card => ({ ...card, state: 'hidden' }))),
     }),
   },
 });

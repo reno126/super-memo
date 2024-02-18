@@ -7,7 +7,6 @@ interface CardProps {
 }
 
 export const Card = ({ card, onCardClick, disabled }: CardProps) => {
-
   const getCardClasses = () => {
     const baseClasses =
       'w-24 h-32 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors duration-200';
