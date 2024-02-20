@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { GameState, BoardSize, CardData } from '../types/game';
+import { GameState, BoardSize, CardData, CardState, GameStatus } from '../types/game';
 
 // Początkowy rozmiar planszy
 const initialBoardSize: BoardSize = {
@@ -29,6 +29,21 @@ const cardActions = {
     }
     return shuffled;
   },
+  updateState: (cards: CardData[], cardIds: number[], newState: CardState): CardData[] =>
+    cards.map(card => (cardIds.includes(card.id) ? { ...card, state: newState } : card)),
+
+  isSelectable: (card: CardData): boolean => !['revealed', 'matched'].includes(card.state),
+};
+
+const gameMappingState = {
+  toPlaying: (currentStatus: GameStatus): GameStatus =>
+    currentStatus === 'idle' ? 'playing' : currentStatus,
+
+  toChecking: (currentStatus: GameStatus): GameStatus =>
+    currentStatus === 'playing' ? 'checking' : currentStatus,
+
+  toCompleted: (currentStatus: GameStatus): GameStatus =>
+    currentStatus === 'checking' || currentStatus === 'playing' ? 'completed' : currentStatus,
 };
 
 export const gameSlice = createSlice({
@@ -40,8 +55,23 @@ export const gameSlice = createSlice({
       cards: cardActions.shuffle(action.payload),
     }),
 
-    flipCard: () => {
-      // TODO: to be add
+    flipCard: (state, action: PayloadAction<number>) => {
+      const cardId = action.payload;
+
+      const card = state.cards.find(c => c.id === cardId);
+
+      if (!card || !cardActions.isSelectable(card) || state.selectedCards.length >= 2) {
+        return;
+      }
+
+      state.status = gameMappingState.toPlaying(state.status);
+      state.cards = cardActions.updateState(state.cards, [cardId], 'revealed');
+      state.selectedCards.push(cardId);
+
+      if (state.selectedCards.length === 2) {
+        state.moves += 1;
+        state.status = gameMappingState.toChecking(state.status);
+      }
     },
 
     checkMatch: () => {

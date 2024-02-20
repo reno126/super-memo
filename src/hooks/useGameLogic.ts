@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { initializeGame, resetGame } from '../store/gameSlice';
+import { flipCard, initializeGame, resetGame } from '../store/gameSlice';
 import { CardData } from '../types/game';
 import { initialCards } from '../data/initialCards';
 
@@ -14,8 +14,8 @@ export const useGameLogic = () => {
     dispatch(initializeGame(initialCards));
   }, [dispatch]);
 
-  const handleCardClick = () => {
-    // TODO: to be add
+  const handleCardClick = (clickedCard: CardData) => {
+    dispatch(flipCard(clickedCard.id));
   };
 
   const handleReset = () => {
