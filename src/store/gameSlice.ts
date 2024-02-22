@@ -78,8 +78,10 @@ export const gameSlice = createSlice({
       // TODO: to be add
     },
 
-    updateTimer: () => {
-      // TODO: to be add
+    updateTimer: state => {
+      if (state.status !== 'idle' && state.status !== 'completed') {
+        state.timeElapsed += 1;
+      }
     },
 
     resetGame: state => ({
