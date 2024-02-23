@@ -33,6 +33,10 @@ const cardActions = {
     cards.map(card => (cardIds.includes(card.id) ? { ...card, state: newState } : card)),
 
   isSelectable: (card: CardData): boolean => !['revealed', 'matched'].includes(card.state),
+
+  areMatching: (card1: CardData, card2: CardData): boolean => card1.value === card2.value,
+
+  allMatched: (cards: CardData[]): boolean => cards.every(card => card.state === 'matched'),
 };
 
 const gameMappingState = {
@@ -74,8 +78,23 @@ export const gameSlice = createSlice({
       }
     },
 
-    checkMatch: () => {
-      // TODO: to be add
+    checkMatch: state => {
+      if (state.selectedCards.length !== 2) return;
+
+      const selectedCards = state.cards.filter(card => state.selectedCards.includes(card.id));
+
+      const [card1, card2] = selectedCards;
+      const newState = cardActions.areMatching(card1, card2) ? 'matched' : 'hidden';
+
+      state.cards = cardActions.updateState(state.cards, state.selectedCards, newState);
+
+      state.selectedCards = [];
+
+      if (cardActions.allMatched(state.cards)) {
+        state.status = gameMappingState.toCompleted(state.status);
+      } else {
+        state.status = 'playing';
+      }
     },
 
     updateTimer: state => {
