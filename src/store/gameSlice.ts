@@ -1,13 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { GameState, BoardSize, CardData, CardState, GameStatus } from '../types/game';
 
-// Początkowy rozmiar planszy
 const initialBoardSize: BoardSize = {
   rows: 4,
   cols: 4,
 };
 
-// Początkowy stan gry
 const initialState: GameState = {
   cards: [],
   moves: 0,

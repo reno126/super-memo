@@ -9,7 +9,7 @@ const formatTime = (seconds: number): string => {
 };
 
 const ScorePanel = React.memo(() => {
-  const { moves, timeElapsed, status } = useAppSelector(state => state.game);
+  const { moves, timeElapsed } = useAppSelector(state => state.game);
 
   return (
     <div
@@ -40,15 +40,6 @@ const ScorePanel = React.memo(() => {
           </p>
         </div>
       </div>
-
-      {status === 'completed' && (
-        <div className="mt-4 text-center" role="alert" aria-live="polite">
-          <p className="text-lg font-bold text-green-600">Gratulacje! Ukończyłeś grę!</p>
-          <p className="text-sm text-gray-600">
-            Twój wynik: {moves} ruchów w czasie {formatTime(timeElapsed)}
-          </p>
-        </div>
-      )}
     </div>
   );
 });

@@ -3,6 +3,7 @@ import { CardData, BoardSize } from '../types/game';
 import Board from './Board';
 import ResetButton from './ResetButton';
 import ScorePanel from './ScorePanel';
+import VictoryModal from './VictoryModal';
 
 interface GameLayoutProps {
   cards: CardData[];
@@ -41,5 +42,6 @@ export const GameLayout: React.FC<GameLayoutProps> = ({
         </div>
       </div>
     </div>
+    <VictoryModal />
   </div>
 );

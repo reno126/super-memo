@@ -10,7 +10,7 @@ export const Game: React.FC = () => {
       cards={cards}
       boardSize={boardSize}
       onCardClick={handleCardClick}
-      disabledCards={false}
+      disabledCards={status === 'completed' || selectedCards.length === 2}
     />
   );
 };
