@@ -40,7 +40,6 @@ const VictoryModal: React.FC = () => {
             <button
               className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
               onClick={handlePlayAgain}
-              aria-label="Rozpocznij nową grę"
             >
               Zagraj ponownie
             </button>

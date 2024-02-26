@@ -24,7 +24,6 @@ const Board: React.FC<BoardProps> = ({ cards, boardSize, onCardClick, disabledCa
       className={`w-full max-w-4xl p-4 grid gap-4 grid-cols-${boardSize.cols} grid-rows-${boardSize.rows}`}
       style={getBoardStyle()}
       role="grid"
-      aria-label="Plansza gry Memory"
       data-testid="game-board"
     >
       {cards.map(card => (

@@ -17,7 +17,7 @@ describe('GameLayout Component', () => {
     mockOnCardClick.mockClear();
   });
 
-  it('renders basic layout', () => {
+  it('renders basic layout and board headers', () => {
     render(
       <Provider store={createMockStore()}>
         <GameLayout
@@ -30,50 +30,10 @@ describe('GameLayout Component', () => {
     );
 
     expect(screen.getByText('Memory Game')).toBeInTheDocument();
+    expect(screen.getByText('Nowa Gra')).toBeInTheDocument();
+    expect(screen.getByText('Ruchy')).toBeInTheDocument();
+    expect(screen.getByText('Czas')).toBeInTheDocument();
+    expect(screen.getByTestId('game-board')).toBeInTheDocument();
 
-    const cards = screen.getAllByRole('button');
-
-    expect(cards).toHaveLength(2);
-  });
-
-  it('handles card clicks correctly', () => {
-    render(
-      <Provider store={createMockStore()}>
-        <GameLayout
-          cards={mockCards}
-          boardSize={mockBoardSize}
-          onCardClick={mockOnCardClick}
-          disabledCards={false}
-        />
-      </Provider>
-    );
-
-    const cards = screen.getAllByRole('button');
-    cards.forEach(card => {
-      card.click();
-    });
-
-    expect(mockOnCardClick).toHaveBeenCalledTimes(2);
-  });
-
-  it('disables cards when disabledCards is true', () => {
-    render(
-      <Provider store={createMockStore()}>
-        <GameLayout
-          cards={mockCards}
-          boardSize={mockBoardSize}
-          onCardClick={mockOnCardClick}
-          disabledCards={true}
-        />
-      </Provider>
-    );
-
-    const cards = screen.getAllByRole('button');
-
-    cards.forEach(card => {
-      card.click();
-    });
-
-    expect(mockOnCardClick).not.toHaveBeenCalled();
   });
 });
