@@ -1,12 +1,7 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { useAppSelector, useAppDispatch } from '../store/hooks';
 import { resetGame } from '../store/gameSlice';
-
-const formatTime = (seconds: number): string => {
-  const minutes = Math.floor(seconds / 60);
-  const remainingSeconds = seconds % 60;
-  return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
-};
+import { formatTime } from '../utils/dateTimeUtils';
 
 const VictoryModal: React.FC = () => {
   const { status, moves, timeElapsed } = useAppSelector(state => state.game);

@@ -1,13 +1,6 @@
 import React from 'react';
 import { useAppSelector } from '../store/hooks';
 
-// ToDo: any better solution?
-const formatTime = (seconds: number): string => {
-  const minutes = Math.floor(seconds / 60);
-  const remainingSeconds = seconds % 60;
-  return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
-};
-
 const ScorePanel = React.memo(() => {
   const { moves, timeElapsed } = useAppSelector(state => state.game);
 
