@@ -34,6 +34,5 @@ describe('GameLayout Component', () => {
     expect(screen.getByText('Ruchy')).toBeInTheDocument();
     expect(screen.getByText('Czas')).toBeInTheDocument();
     expect(screen.getByTestId('game-board')).toBeInTheDocument();
-
   });
 });

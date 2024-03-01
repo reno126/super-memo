@@ -136,13 +136,12 @@ describe('Game Slice', () => {
       },
       initializeGame(mockCards)
     );
-    const isPositionDifferent = state.cards.some((card, index) =>
-      card.value !== mockCards[index].value
+    const isPositionDifferent = state.cards.some(
+      (card, index) => card.value !== mockCards[index].value
     );
 
     expect(isPositionDifferent).toBe(true);
   });
-
 
   it('does reset game provide proper state', () => {
     const state = gameSlice.reducer(

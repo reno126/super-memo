@@ -1,5 +1,6 @@
 import React from 'react';
 import { useAppSelector } from '../store/hooks';
+import { formatTime } from '../utils/dateTimeUtils';
 
 const ScorePanel = React.memo(() => {
   const { moves, timeElapsed } = useAppSelector(state => state.game);
