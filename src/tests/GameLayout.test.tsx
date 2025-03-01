@@ -29,10 +29,10 @@ describe('GameLayout Component', () => {
       </Provider>
     );
 
-    expect(screen.getByText('Memory Game')).toBeInTheDocument();
-    expect(screen.getByText('Nowa Gra')).toBeInTheDocument();
-    expect(screen.getByText('Ruchy')).toBeInTheDocument();
-    expect(screen.getByText('Czas')).toBeInTheDocument();
+    expect(screen.getByTestId('game-title')).toBeInTheDocument();
+    expect(screen.getByTestId('reset-button')).toBeInTheDocument();
+    expect(screen.getByTestId('moves-label')).toBeInTheDocument();
+    expect(screen.getByTestId('time-label')).toBeInTheDocument();
     expect(screen.getByTestId('game-board')).toBeInTheDocument();
   });
 });

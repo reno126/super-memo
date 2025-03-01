@@ -20,8 +20,8 @@ describe('ScorePanel Component', () => {
       </Provider>
     );
 
-    expect(screen.getByText('Ruchy')).toBeInTheDocument();
-    expect(screen.getByText('5')).toBeInTheDocument();
+    expect(screen.getByTestId('moves-label')).toBeInTheDocument();
+    expect(screen.getByTestId('moves-value')).toHaveTextContent('5');
   });
 
   it('displays formatted time correctly', () => {
@@ -40,8 +40,8 @@ describe('ScorePanel Component', () => {
       </Provider>
     );
 
-    expect(screen.getByText('Czas')).toBeInTheDocument();
-    expect(screen.getByText('1:05')).toBeInTheDocument();
+    expect(screen.getByTestId('time-label')).toBeInTheDocument();
+    expect(screen.getByTestId('time-value')).toHaveTextContent('1:05');
   });
 
   it('shows zero values for new game', () => {
@@ -60,9 +60,9 @@ describe('ScorePanel Component', () => {
       </Provider>
     );
 
-    expect(screen.getByText('Ruchy')).toBeInTheDocument();
-    expect(screen.getByText('0')).toBeInTheDocument();
-    expect(screen.getByText('0:00')).toBeInTheDocument();
+    expect(screen.getByTestId('moves-label')).toBeInTheDocument();
+    expect(screen.getByTestId('moves-value')).toHaveTextContent('0');
+    expect(screen.getByTestId('time-value')).toHaveTextContent('0:00');
   });
 
   it('formats time with leading zeros', () => {
@@ -81,6 +81,6 @@ describe('ScorePanel Component', () => {
       </Provider>
     );
 
-    expect(screen.getByText('5:05')).toBeInTheDocument();
+    expect(screen.getByTestId('time-value')).toHaveTextContent('5:05');
   });
 });

@@ -18,9 +18,13 @@ describe('VictoryModal Component', () => {
       </Provider>
     );
 
-    expect(screen.getByText('Gratulacje!')).toBeInTheDocument();
-    expect(screen.getByText('Ukończyłeś grę w czasie 1:05!')).toBeInTheDocument();
-    expect(screen.getByText('Liczba wykonanych ruchów: 10')).toBeInTheDocument();
+    expect(screen.getByTestId('victory-title')).toBeInTheDocument();
+    expect(screen.getByTestId('victory-time-message')).toHaveTextContent(
+      'Ukończyłeś grę w czasie 1:05!'
+    );
+    expect(screen.getByTestId('victory-moves-message')).toHaveTextContent(
+      'Liczba wykonanych ruchów: 10'
+    );
   });
 
   it('does not render when game is not completed', () => {
@@ -52,7 +56,7 @@ describe('VictoryModal Component', () => {
       </Provider>
     );
 
-    fireEvent.click(screen.getByText('Zagraj ponownie'));
+    fireEvent.click(screen.getByTestId('play-again-button'));
 
     const state = store.getState();
     expect(state.game.status).toBe('idle');

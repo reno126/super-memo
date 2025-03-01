@@ -22,7 +22,9 @@ export const GameLayout: React.FC<GameLayoutProps> = ({
     <div className="relative py-3 max-w-xl mx-auto">
       <div className="relative px-4 py-10 bg-white shadow-lg rounded-3xl">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">Memory Game</h1>
+          <h1 className="text-2xl font-bold text-gray-900" data-testid="game-title">
+            Memory Game
+          </h1>
           <ResetButton />
         </div>
         <ScorePanel />
