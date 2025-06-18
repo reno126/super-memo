@@ -35,6 +35,9 @@ Redux Toolkit is the official, opinionated toolset for efficient Redux developme
 To run the test suite:
 pnpm test
 
+## Live demo
+You can visit https://financialsheets-reno126s-projects.vercel.app
+
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
