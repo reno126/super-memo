@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/super-memo/static/css/main.36017175.css",
+    "main.js": "/super-memo/static/js/main.72231b45.js",
+    "index.html": "/super-memo/index.html",
+    "main.36017175.css.map": "/super-memo/static/css/main.36017175.css.map",
+    "main.72231b45.js.map": "/super-memo/static/js/main.72231b45.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.36017175.css",
+    "static/js/main.72231b45.js"
+  ]
+}
