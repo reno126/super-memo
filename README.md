@@ -3,6 +3,8 @@
 A memory card matching game built with React.
 The main purpose of this application is to test the advantages of using **react-toolkit**. Therefore, all the rest of the code is very simple and obvious. By separating logic and state from the rest of the application, it is possible to conveniently test the main functionalities.
 
+## Live demo at https://reno126.github.io/super-memo/
+
 ## Technologies Used
 
 - React
