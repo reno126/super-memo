@@ -17,22 +17,27 @@ const initialState: GameState = {
 
 const cardActions = {
   shuffle: (cards: CardData[]): CardData[] => {
-    const shuffled = cards.map((card, index) => ({ ...card, position: index }));
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffled[i], shuffled[j]] = [
-        { ...shuffled[j], position: i },
-        { ...shuffled[i], position: j },
-      ];
+    const shuffledCards = cards.map((card, index) => ({ ...card, position: index }));
+    for (let index = shuffledCards.length - 1; index > 0; index--) {
+      const randomIndex = Math.floor(Math.random() * (index + 1));
+      const currentCard = shuffledCards[index];
+      const randomCard = shuffledCards[randomIndex];
+
+      if (currentCard && randomCard) {
+        shuffledCards[index] = { ...randomCard, position: index };
+        shuffledCards[randomIndex] = { ...currentCard, position: randomIndex };
+      }
     }
-    return shuffled;
+    return shuffledCards;
   },
+
   updateState: (cards: CardData[], cardIds: number[], newState: CardState): CardData[] =>
     cards.map(card => (cardIds.includes(card.id) ? { ...card, state: newState } : card)),
 
   isSelectable: (card: CardData): boolean => !['revealed', 'matched'].includes(card.state),
 
-  areMatching: (card1: CardData, card2: CardData): boolean => card1.value === card2.value,
+  areMatching: (firstCard: CardData, secondCard: CardData): boolean =>
+    firstCard.value === secondCard.value,
 
   allMatched: (cards: CardData[]): boolean => cards.every(card => card.state === 'matched'),
 };
@@ -54,15 +59,15 @@ export const gameSlice = createSlice({
   reducers: {
     initializeGame: (_state, action: PayloadAction<CardData[]>) => ({
       ...initialState,
-      cards: cardActions.shuffle(action.payload),
+      cards: cardActions.shuffle(action.payload.map(card => ({ ...card, state: 'hidden' }))),
     }),
 
     flipCard: (state, action: PayloadAction<number>) => {
       const cardId = action.payload;
 
-      const card = state.cards.find(c => c.id === cardId);
+      const targetCard = state.cards.find(card => card.id === cardId);
 
-      if (!card || !cardActions.isSelectable(card) || state.selectedCards.length >= 2) {
+      if (!targetCard || !cardActions.isSelectable(targetCard) || state.selectedCards.length >= 2) {
         return;
       }
 
@@ -79,13 +84,25 @@ export const gameSlice = createSlice({
     checkMatch: state => {
       if (state.selectedCards.length !== 2) return;
 
-      const selectedCards = state.cards.filter(card => state.selectedCards.includes(card.id));
+      const firstSelectedId = state.selectedCards[0];
+      const secondSelectedId = state.selectedCards[1];
 
-      const [card1, card2] = selectedCards;
-      const newState = cardActions.areMatching(card1, card2) ? 'matched' : 'hidden';
+      const firstCard = state.cards.find(card => card.id === firstSelectedId);
+      const secondCard = state.cards.find(card => card.id === secondSelectedId);
 
-      state.cards = cardActions.updateState(state.cards, state.selectedCards, newState);
+      if (!firstCard || !secondCard) {
+        state.selectedCards = [];
+        return;
+      }
 
+      const isMatch = cardActions.areMatching(firstCard, secondCard);
+      const targetState: CardState = isMatch ? 'matched' : 'hidden';
+
+      state.cards = cardActions.updateState(
+        state.cards,
+        [firstCard.id, secondCard.id],
+        targetState
+      );
       state.selectedCards = [];
 
       if (cardActions.allMatched(state.cards)) {
