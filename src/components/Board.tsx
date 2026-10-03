@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { CardData, BoardSize } from '../types/game';
 import Card from './Card';
 
@@ -9,20 +9,21 @@ interface BoardProps {
   disabledCards: boolean;
 }
 
-const Board: React.FC<BoardProps> = ({ cards, boardSize, onCardClick, disabledCards }) => {
-  // Obliczamy style dla kontenera planszy na podstawie rozmiaru
-  const getBoardStyle = () => {
-    return {
+export function Board({ cards, boardSize, onCardClick, disabledCards }: BoardProps) {
+  const boardStyle = useMemo(
+    () => ({
       display: 'grid',
       gridTemplateColumns: `repeat(${boardSize.cols}, minmax(0, 1fr))`,
+      gridTemplateRows: `repeat(${boardSize.rows}, minmax(0, 1fr))`,
       gap: '1rem',
-    };
-  };
+    }),
+    [boardSize.cols, boardSize.rows]
+  );
 
   return (
     <div
-      className={`w-full max-w-4xl p-4 grid gap-4 grid-cols-${boardSize.cols} grid-rows-${boardSize.rows}`}
-      style={getBoardStyle()}
+      className="w-full max-w-4xl p-4 grid gap-4"
+      style={boardStyle}
       role="grid"
       data-testid="game-board"
     >
@@ -33,6 +34,6 @@ const Board: React.FC<BoardProps> = ({ cards, boardSize, onCardClick, disabledCa
       ))}
     </div>
   );
-};
+}
 
 export default Board;

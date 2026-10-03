@@ -1,4 +1,5 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import Board from '../components/Board';
 import { CardData, BoardSize } from '../types/game';
 
@@ -46,10 +47,16 @@ describe('Board Component', () => {
     );
 
     const cards = screen.getAllByRole('button');
-    fireEvent.click(cards[0]);
+    const firstButton = cards[0];
+    const expectedCard = mockCards[0];
+    expect(firstButton).toBeDefined();
+    expect(expectedCard).toBeDefined();
 
-    expect(mockOnCardClick).toHaveBeenCalledWith(mockCards[0]);
-    expect(mockOnCardClick).toHaveBeenCalledTimes(1);
+    if (firstButton && expectedCard) {
+      userEvent.click(firstButton);
+      expect(mockOnCardClick).toHaveBeenCalledWith(expectedCard);
+      expect(mockOnCardClick).toHaveBeenCalledTimes(1);
+    }
   });
 
   it('disables all cards when disabledCards is true', () => {
@@ -63,9 +70,13 @@ describe('Board Component', () => {
     );
 
     const cards = screen.getAllByRole('button');
-    fireEvent.click(cards[0]);
+    const firstButton = cards[0];
+    expect(firstButton).toBeDefined();
 
-    expect(mockOnCardClick).not.toHaveBeenCalled();
+    if (firstButton) {
+      userEvent.click(firstButton);
+      expect(mockOnCardClick).not.toHaveBeenCalled();
+    }
   });
 
   it('applies correct grid layout based on board size', () => {
