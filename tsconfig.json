@@ -20,7 +20,8 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "noUncheckedIndexedAccess": true,
-    "noImplicitReturns": true
+    "noImplicitReturns": true,
+    "types": ["jest", "node"]
   },
   "include": [
     "src"
