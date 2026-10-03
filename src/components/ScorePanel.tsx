@@ -1,12 +1,16 @@
-import React from 'react';
 import { useAppSelector } from '../store/hooks';
 import { formatTime } from '../utils/dateTimeUtils';
 
-const ScorePanel = React.memo(() => {
-  const { moves, timeElapsed } = useAppSelector(state => state.game);
+export function ScorePanel() {
+  const moves = useAppSelector(state => state.game.moves);
+  const timeElapsed = useAppSelector(state => state.game.timeElapsed);
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-4 mb-6" role="region">
+    <div
+      className="bg-white rounded-lg shadow-md p-4 mb-6"
+      role="region"
+      aria-label="Panel wyników gry"
+    >
       <div className="grid grid-cols-2 gap-4">
         <div className="text-center">
           <h2
@@ -36,8 +40,6 @@ const ScorePanel = React.memo(() => {
       </div>
     </div>
   );
-});
-
-ScorePanel.displayName = 'DisplayName';
+}
 
 export default ScorePanel;
