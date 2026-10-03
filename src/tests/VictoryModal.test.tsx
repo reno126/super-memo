@@ -1,4 +1,5 @@
-import { render, fireEvent, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import '../setupTests';
 import { Provider } from 'react-redux';
 import VictoryModal from '../components/VictoryModal';
@@ -25,6 +26,8 @@ describe('VictoryModal Component', () => {
     expect(screen.getByTestId('victory-moves-message')).toHaveTextContent(
       'Liczba wykonanych ruchów: 10'
     );
+    expect(screen.getByRole('dialog')).toHaveAttribute('aria-modal', 'true');
+    expect(document.activeElement).toBe(screen.getByTestId('victory-title'));
   });
 
   it('does not render when game is not completed', () => {
@@ -56,7 +59,7 @@ describe('VictoryModal Component', () => {
       </Provider>
     );
 
-    fireEvent.click(screen.getByTestId('play-again-button'));
+    userEvent.click(screen.getByTestId('play-again-button'));
 
     const state = store.getState();
     expect(state.game.status).toBe('idle');
