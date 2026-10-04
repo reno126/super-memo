@@ -1,3 +1,4 @@
+import React, { useCallback } from 'react';
 import { CardData } from '../types/game';
 
 interface CardProps {
@@ -6,7 +7,7 @@ interface CardProps {
   disabled: boolean;
 }
 
-export const Card = ({ card, onCardClick, disabled }: CardProps) => {
+export const Card = React.memo(function Card({ card, onCardClick, disabled }: CardProps) {
   const getCardClasses = () => {
     const baseClasses =
       'w-24 h-32 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors duration-200';
@@ -23,17 +24,25 @@ export const Card = ({ card, onCardClick, disabled }: CardProps) => {
     }
   };
 
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     if (!disabled) {
       onCardClick(card);
     }
-  };
+  }, [card, disabled, onCardClick]);
+
+  const cardAccessibilityLabel =
+    card.state === 'hidden'
+      ? `Karta ${card.position + 1}, odwrócona`
+      : card.state === 'matched'
+      ? `Karta ${card.position + 1}, dopasowana, symbol ${card.value}`
+      : `Karta ${card.position + 1}, odkryta, symbol ${card.value}`;
 
   return (
     <button
       className={getCardClasses()}
       onClick={handleClick}
       disabled={disabled}
+      aria-label={cardAccessibilityLabel}
       data-testid={`card-${card.id}`}
     >
       <div className="flex items-center justify-center w-full h-full text-2xl font-bold">
@@ -41,6 +50,6 @@ export const Card = ({ card, onCardClick, disabled }: CardProps) => {
       </div>
     </button>
   );
-};
+});
 
 export default Card;
