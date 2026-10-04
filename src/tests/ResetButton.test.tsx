@@ -5,7 +5,8 @@ import { ResetButton } from '../components/ResetButton';
 import { createMockStore, createTestGameState } from '../utils/testUtils';
 
 describe('ResetButton Component', () => {
-  it('renders correctly and dispatches resetGame when clicked', () => {
+  it('renders correctly and dispatches resetGame when clicked', async () => {
+    const user = userEvent.setup();
     const store = createMockStore(
       createTestGameState({
         moves: 4,
@@ -24,7 +25,7 @@ describe('ResetButton Component', () => {
     expect(button).toBeInTheDocument();
     expect(button).toHaveTextContent('Nowa Gra');
 
-    userEvent.click(button);
+    await user.click(button);
 
     const state = store.getState();
     expect(state.game.status).toBe('idle');

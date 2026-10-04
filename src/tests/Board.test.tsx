@@ -36,7 +36,8 @@ describe('Board Component', () => {
     expect(board.children).toHaveLength(4);
   });
 
-  it('handles card clicks correctly', () => {
+  it('handles card clicks correctly', async () => {
+    const user = userEvent.setup();
     render(
       <Board
         cards={mockCards}
@@ -53,13 +54,14 @@ describe('Board Component', () => {
     expect(expectedCard).toBeDefined();
 
     if (firstButton && expectedCard) {
-      userEvent.click(firstButton);
+      await user.click(firstButton);
       expect(mockOnCardClick).toHaveBeenCalledWith(expectedCard);
       expect(mockOnCardClick).toHaveBeenCalledTimes(1);
     }
   });
 
-  it('disables all cards when disabledCards is true', () => {
+  it('disables all cards when disabledCards is true', async () => {
+    const user = userEvent.setup();
     render(
       <Board
         cards={mockCards}
@@ -74,7 +76,7 @@ describe('Board Component', () => {
     expect(firstButton).toBeDefined();
 
     if (firstButton) {
-      userEvent.click(firstButton);
+      await user.click(firstButton);
       expect(mockOnCardClick).not.toHaveBeenCalled();
     }
   });

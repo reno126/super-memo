@@ -1,4 +1,4 @@
-import { render, screen, act } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import { Game } from '../components/Game';
@@ -21,7 +21,8 @@ describe('Game Component', () => {
     expect(screen.getByTestId('time-value')).toHaveTextContent('0:00');
   });
 
-  it('allows clicking a card to initiate game play', () => {
+  it('allows clicking a card to initiate game play', async () => {
+    const user = userEvent.setup();
     const store = createMockStore();
 
     render(
@@ -35,9 +36,7 @@ describe('Game Component', () => {
     expect(firstCard).toBeDefined();
 
     if (firstCard) {
-      act(() => {
-        userEvent.click(firstCard);
-      });
+      await user.click(firstCard);
       const state = store.getState();
       expect(state.game.status).toBe('playing');
     }

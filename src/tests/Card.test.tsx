@@ -41,16 +41,18 @@ describe('Card Component', () => {
     expect(cardButton).toHaveAttribute('aria-label', 'Karta 1, dopasowana, symbol A');
   });
 
-  it('handles click when not disabled', () => {
+  it('handles click when not disabled', async () => {
+    const user = userEvent.setup();
     render(<Card card={mockCard} onCardClick={mockOnClick} disabled={false} />);
-    userEvent.click(screen.getByRole('button'));
+    await user.click(screen.getByRole('button'));
     expect(mockOnClick).toHaveBeenCalledWith(mockCard);
     expect(mockOnClick).toHaveBeenCalledTimes(1);
   });
 
-  it('does not handle click when disabled', () => {
+  it('does not handle click when disabled', async () => {
+    const user = userEvent.setup();
     render(<Card card={mockCard} onCardClick={mockOnClick} disabled={true} />);
-    userEvent.click(screen.getByRole('button'));
+    await user.click(screen.getByRole('button'));
     expect(mockOnClick).not.toHaveBeenCalled();
   });
 });

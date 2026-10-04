@@ -49,7 +49,8 @@ describe('VictoryModal Component', () => {
     expect(container.firstChild).toBeNull();
   });
 
-  it('handles play again button click', () => {
+  it('handles play again button click', async () => {
+    const user = userEvent.setup();
     const store = createMockStore(
       createTestGameState({
         status: 'completed',
@@ -64,7 +65,7 @@ describe('VictoryModal Component', () => {
       </Provider>
     );
 
-    userEvent.click(screen.getByTestId('play-again-button'));
+    await user.click(screen.getByTestId('play-again-button'));
 
     const state = store.getState();
     expect(state.game.status).toBe('idle');
