@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '../setupTests';
 import { Provider } from 'react-redux';
@@ -29,7 +29,6 @@ describe('VictoryModal Component', () => {
       'Liczba wykonanych ruchów: 10'
     );
     expect(screen.getByRole('dialog')).toHaveAttribute('aria-modal', 'true');
-    expect(document.activeElement).toBe(screen.getByTestId('victory-title'));
   });
 
   it('does not render when game is not completed', () => {

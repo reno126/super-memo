@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react';
+import { useCallback } from 'react';
 import { useAppSelector, useAppDispatch } from '../store/hooks';
 import { resetGame } from '../store/gameSlice';
 import { formatTime } from '../utils/dateTimeUtils';
@@ -7,7 +7,6 @@ function VictoryContent() {
   const moves = useAppSelector(state => state.game.moves);
   const timeElapsed = useAppSelector(state => state.game.timeElapsed);
   const dispatch = useAppDispatch();
-  const titleRef = useRef<HTMLHeadingElement>(null);
 
   const handlePlayAgain = useCallback(() => {
     dispatch(resetGame());
@@ -25,8 +24,6 @@ function VictoryContent() {
             className="text-2xl font-bold text-center text-green-600 mb-4"
             id="victory-title"
             data-testid="victory-title"
-            tabIndex={-1}
-            ref={titleRef}
           >
             Gratulacje!
           </h2>

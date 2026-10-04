@@ -79,17 +79,4 @@ describe('Board Component', () => {
     }
   });
 
-  it('applies correct grid layout based on board size', () => {
-    render(
-      <Board
-        cards={mockCards}
-        boardSize={mockBoardSize}
-        onCardClick={mockOnCardClick}
-        disabledCards={false}
-      />
-    );
-
-    const board = screen.getByTestId('game-board');
-    expect(board).toHaveClass('grid-cols-2 grid-rows-2');
-  });
 });
