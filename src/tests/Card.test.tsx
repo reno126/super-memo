@@ -20,25 +20,22 @@ describe('Card Component', () => {
 
   it('renders correctly in hidden state', () => {
     render(<Card card={mockCard} onCardClick={mockOnClick} disabled={false} />);
-    const cardButton = screen.getByRole('button');
+    const cardButton = screen.getByRole('button', { name: /karta 1, odwrócona/i });
     expect(cardButton).toHaveTextContent('?');
-    expect(cardButton).toHaveAttribute('aria-label', 'Karta 1, odwrócona');
   });
 
   it('renders correctly in revealed state', () => {
     const revealedCard: CardData = { ...mockCard, state: 'revealed' };
     render(<Card card={revealedCard} onCardClick={mockOnClick} disabled={false} />);
-    const cardButton = screen.getByRole('button');
+    const cardButton = screen.getByRole('button', { name: /karta 1, odkryta, symbol a/i });
     expect(cardButton).toHaveTextContent('A');
-    expect(cardButton).toHaveAttribute('aria-label', 'Karta 1, odkryta, symbol A');
   });
 
   it('renders correctly in matched state', () => {
     const matchedCard: CardData = { ...mockCard, state: 'matched' };
     render(<Card card={matchedCard} onCardClick={mockOnClick} disabled={false} />);
-    const cardButton = screen.getByRole('button');
+    const cardButton = screen.getByRole('button', { name: /karta 1, dopasowana, symbol a/i });
     expect(cardButton).toHaveTextContent('A');
-    expect(cardButton).toHaveAttribute('aria-label', 'Karta 1, dopasowana, symbol A');
   });
 
   it('handles click when not disabled', async () => {

@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import { GameLayout } from '../components/GameLayout';
 import { createMockStore } from '../utils/testUtils';
@@ -17,7 +18,8 @@ describe('GameLayout Component', () => {
     mockOnCardClick.mockClear();
   });
 
-  it('renders basic layout and board headers', () => {
+  it('renders accessible game controls and the supplied cards', async () => {
+    const user = userEvent.setup();
     render(
       <Provider store={createMockStore()}>
         <GameLayout
@@ -29,10 +31,13 @@ describe('GameLayout Component', () => {
       </Provider>
     );
 
-    expect(screen.getByTestId('game-title')).toBeInTheDocument();
-    expect(screen.getByTestId('reset-button')).toBeInTheDocument();
-    expect(screen.getByTestId('moves-label')).toBeInTheDocument();
-    expect(screen.getByTestId('time-label')).toBeInTheDocument();
-    expect(screen.getByTestId('game-board')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /memory game/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /nowa gra/i })).toBeInTheDocument();
+    expect(screen.getByRole('region', { name: /panel wyników gry/i })).toHaveTextContent('Ruchy');
+    expect(screen.getByRole('region', { name: /panel wyników gry/i })).toHaveTextContent('Czas');
+    expect(screen.getAllByRole('gridcell')).toHaveLength(mockCards.length);
+    const firstCard = screen.getByRole('button', { name: /karta 1, odwrócona/i });
+    await user.click(firstCard);
+    expect(mockOnCardClick).toHaveBeenCalledWith(mockCards[0]);
   });
 });

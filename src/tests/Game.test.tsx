@@ -14,11 +14,13 @@ describe('Game Component', () => {
       </Provider>
     );
 
-    expect(screen.getByTestId('game-title')).toHaveTextContent('Memory Game');
-    expect(screen.getByTestId('reset-button')).toBeInTheDocument();
-    expect(screen.getByTestId('game-board')).toBeInTheDocument();
-    expect(screen.getByTestId('moves-value')).toHaveTextContent('0');
-    expect(screen.getByTestId('time-value')).toHaveTextContent('0:00');
+    expect(screen.getByRole('heading', { name: /memory game/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /nowa gra/i })).toBeInTheDocument();
+    expect(screen.getByRole('grid')).toBeInTheDocument();
+    expect(screen.getByRole('region', { name: /panel wyników gry/i })).toHaveTextContent('Ruchy0');
+    expect(screen.getByRole('region', { name: /panel wyników gry/i })).toHaveTextContent(
+      'Czas0:00'
+    );
   });
 
   it('allows clicking a card to initiate game play', async () => {
@@ -31,14 +33,8 @@ describe('Game Component', () => {
       </Provider>
     );
 
-    const cards = screen.getAllByRole('button');
-    const firstCard = cards[1]; // first board card (after reset button)
-    expect(firstCard).toBeDefined();
-
-    if (firstCard) {
-      await user.click(firstCard);
-      const state = store.getState();
-      expect(state.game.status).toBe('playing');
-    }
+    const firstCard = screen.getByRole('button', { name: /karta 1, odwrócona/i });
+    await user.click(firstCard);
+    expect(store.getState().game.status).toBe('playing');
   });
 });

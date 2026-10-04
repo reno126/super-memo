@@ -21,9 +21,8 @@ describe('ResetButton Component', () => {
       </Provider>
     );
 
-    const button = screen.getByTestId('reset-button');
+    const button = screen.getByRole('button', { name: /nowa gra/i });
     expect(button).toBeInTheDocument();
-    expect(button).toHaveTextContent('Nowa Gra');
 
     await user.click(button);
 

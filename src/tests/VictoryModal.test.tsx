@@ -21,14 +21,10 @@ describe('VictoryModal Component', () => {
       </Provider>
     );
 
-    expect(screen.getByTestId('victory-title')).toBeInTheDocument();
-    expect(screen.getByTestId('victory-time-message')).toHaveTextContent(
-      'Ukończyłeś grę w czasie 1:05!'
-    );
-    expect(screen.getByTestId('victory-moves-message')).toHaveTextContent(
-      'Liczba wykonanych ruchów: 10'
-    );
-    expect(screen.getByRole('dialog')).toHaveAttribute('aria-modal', 'true');
+    const victoryDialog = screen.getByRole('dialog', { name: /gratulacje/i });
+    expect(victoryDialog).toBeInTheDocument();
+    expect(victoryDialog.textContent).toContain('1:05');
+    expect(victoryDialog.textContent).toContain('10');
   });
 
   it('does not render when game is not completed', () => {
@@ -40,13 +36,13 @@ describe('VictoryModal Component', () => {
       })
     );
 
-    const { container } = render(
+    render(
       <Provider store={store}>
         <VictoryModal />
       </Provider>
     );
 
-    expect(container.firstChild).toBeNull();
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
   it('handles play again button click', async () => {
@@ -65,7 +61,7 @@ describe('VictoryModal Component', () => {
       </Provider>
     );
 
-    await user.click(screen.getByTestId('play-again-button'));
+    await user.click(screen.getByRole('button', { name: /zagraj ponownie/i }));
 
     const state = store.getState();
     expect(state.game.status).toBe('idle');

@@ -28,12 +28,9 @@ describe('Board Component', () => {
       />
     );
 
-    const cards = screen.getAllByRole('button');
-    expect(cards).toHaveLength(4);
-
-    const board = screen.getByTestId('game-board');
+    const board = screen.getByRole('grid');
     expect(board).toBeInTheDocument();
-    expect(board.children).toHaveLength(4);
+    expect(screen.getAllByRole('gridcell')).toHaveLength(mockCards.length);
   });
 
   it('handles card clicks correctly', async () => {
@@ -47,17 +44,10 @@ describe('Board Component', () => {
       />
     );
 
-    const cards = screen.getAllByRole('button');
-    const firstButton = cards[0];
-    const expectedCard = mockCards[0];
-    expect(firstButton).toBeDefined();
-    expect(expectedCard).toBeDefined();
-
-    if (firstButton && expectedCard) {
-      await user.click(firstButton);
-      expect(mockOnCardClick).toHaveBeenCalledWith(expectedCard);
-      expect(mockOnCardClick).toHaveBeenCalledTimes(1);
-    }
+    const firstCard = screen.getByRole('button', { name: /karta 1, odwrócona/i });
+    await user.click(firstCard);
+    expect(mockOnCardClick).toHaveBeenCalledWith(mockCards[0]);
+    expect(mockOnCardClick).toHaveBeenCalledTimes(1);
   });
 
   it('disables all cards when disabledCards is true', async () => {
@@ -71,14 +61,9 @@ describe('Board Component', () => {
       />
     );
 
-    const cards = screen.getAllByRole('button');
-    const firstButton = cards[0];
-    expect(firstButton).toBeDefined();
-
-    if (firstButton) {
-      await user.click(firstButton);
-      expect(mockOnCardClick).not.toHaveBeenCalled();
-    }
+    const firstCard = screen.getByRole('button', { name: /karta 1, odwrócona/i });
+    expect(firstCard).toHaveAttribute('disabled');
+    await user.click(firstCard);
+    expect(mockOnCardClick).not.toHaveBeenCalled();
   });
-
 });

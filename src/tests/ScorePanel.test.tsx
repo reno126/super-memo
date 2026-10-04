@@ -22,8 +22,8 @@ describe('ScorePanel Component', () => {
       </Provider>
     );
 
-    expect(screen.getByTestId('moves-label')).toBeInTheDocument();
-    expect(screen.getByTestId('moves-value')).toHaveTextContent('5');
+    const scorePanel = screen.getByRole('region', { name: /panel wyników gry/i });
+    expect(scorePanel).toHaveTextContent('Ruchy5');
   });
 
   it('displays formatted time correctly', () => {
@@ -44,8 +44,9 @@ describe('ScorePanel Component', () => {
       </Provider>
     );
 
-    expect(screen.getByTestId('time-label')).toBeInTheDocument();
-    expect(screen.getByTestId('time-value')).toHaveTextContent('1:05');
+    expect(screen.getByRole('region', { name: /panel wyników gry/i })).toHaveTextContent(
+      'Czas1:05'
+    );
   });
 
   it('shows zero values for new game', () => {
@@ -66,9 +67,9 @@ describe('ScorePanel Component', () => {
       </Provider>
     );
 
-    expect(screen.getByTestId('moves-label')).toBeInTheDocument();
-    expect(screen.getByTestId('moves-value')).toHaveTextContent('0');
-    expect(screen.getByTestId('time-value')).toHaveTextContent('0:00');
+    const scorePanel = screen.getByRole('region', { name: /panel wyników gry/i });
+    expect(scorePanel).toHaveTextContent('Ruchy0');
+    expect(scorePanel).toHaveTextContent('Czas0:00');
   });
 
   it('formats time with leading zeros', () => {
@@ -89,6 +90,8 @@ describe('ScorePanel Component', () => {
       </Provider>
     );
 
-    expect(screen.getByTestId('time-value')).toHaveTextContent('5:05');
+    expect(screen.getByRole('region', { name: /panel wyników gry/i })).toHaveTextContent(
+      'Czas5:05'
+    );
   });
 });
