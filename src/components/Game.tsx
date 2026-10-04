@@ -1,8 +1,7 @@
-import React from 'react';
 import { useGameLogic } from '../hooks/useGameLogic';
 import { GameLayout } from './GameLayout';
 
-export const Game: React.FC = () => {
+export function Game() {
   const { cards, status, selectedCards, boardSize, handleCardClick } = useGameLogic();
 
   return (
@@ -13,4 +12,6 @@ export const Game: React.FC = () => {
       disabledCards={status === 'completed' || selectedCards.length === 2}
     />
   );
-};
+}
+
+export default Game;

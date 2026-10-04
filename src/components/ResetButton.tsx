@@ -1,8 +1,7 @@
-import React from 'react';
 import { useAppDispatch } from '../store/hooks';
 import { resetGame } from '../store/gameSlice';
 
-const ResetButton: React.FC = () => {
+export function ResetButton() {
   const dispatch = useAppDispatch();
 
   const handleReset = () => {
@@ -18,6 +17,6 @@ const ResetButton: React.FC = () => {
       Nowa Gra
     </button>
   );
-};
+}
 
 export default ResetButton;

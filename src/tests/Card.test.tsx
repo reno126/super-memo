@@ -1,7 +1,8 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import '../setupTests';
 import { Card } from '../components/Card';
-import { CardData, CardState } from '../types/game';
+import { CardData } from '../types/game';
 
 describe('Card Component', () => {
   const mockCard: CardData = {
@@ -19,37 +20,37 @@ describe('Card Component', () => {
 
   it('renders correctly in hidden state', () => {
     render(<Card card={mockCard} onCardClick={mockOnClick} disabled={false} />);
-    const button = screen.getByRole('button');
-    expect(button).toHaveTextContent('?');
-    expect(button).toHaveClass('bg-blue-500');
+    const cardButton = screen.getByRole('button');
+    expect(cardButton).toHaveTextContent('?');
+    expect(cardButton).toHaveAttribute('aria-label', 'Karta 1, odwrócona');
   });
 
   it('renders correctly in revealed state', () => {
-    const revealedCard = { ...mockCard, state: 'revealed' as CardState };
+    const revealedCard: CardData = { ...mockCard, state: 'revealed' };
     render(<Card card={revealedCard} onCardClick={mockOnClick} disabled={false} />);
-    const button = screen.getByRole('button');
-    expect(button).toHaveTextContent('A');
-    expect(button).toHaveClass('bg-white');
+    const cardButton = screen.getByRole('button');
+    expect(cardButton).toHaveTextContent('A');
+    expect(cardButton).toHaveAttribute('aria-label', 'Karta 1, odkryta, symbol A');
   });
 
   it('renders correctly in matched state', () => {
-    const matchedCard = { ...mockCard, state: 'matched' as CardState };
+    const matchedCard: CardData = { ...mockCard, state: 'matched' };
     render(<Card card={matchedCard} onCardClick={mockOnClick} disabled={false} />);
-    const button = screen.getByRole('button');
-    expect(button).toHaveTextContent('A');
-    expect(button).toHaveClass('bg-green-100');
+    const cardButton = screen.getByRole('button');
+    expect(cardButton).toHaveTextContent('A');
+    expect(cardButton).toHaveAttribute('aria-label', 'Karta 1, dopasowana, symbol A');
   });
 
   it('handles click when not disabled', () => {
     render(<Card card={mockCard} onCardClick={mockOnClick} disabled={false} />);
-    fireEvent.click(screen.getByRole('button'));
+    userEvent.click(screen.getByRole('button'));
     expect(mockOnClick).toHaveBeenCalledWith(mockCard);
     expect(mockOnClick).toHaveBeenCalledTimes(1);
   });
 
   it('does not handle click when disabled', () => {
     render(<Card card={mockCard} onCardClick={mockOnClick} disabled={true} />);
-    fireEvent.click(screen.getByRole('button'));
+    userEvent.click(screen.getByRole('button'));
     expect(mockOnClick).not.toHaveBeenCalled();
   });
 });
