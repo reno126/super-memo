@@ -26,7 +26,7 @@ export function createTestGameState(gameStateOverrides: GameStateOverrides = {})
   };
 }
 
-export const createMockStore = (preloadedGameState: GameState = createTestGameState()) => {
+export function createTestStore(preloadedGameState: GameState = createTestGameState()) {
   return configureStore({
     reducer: {
       game: gameReducer,
@@ -35,4 +35,4 @@ export const createMockStore = (preloadedGameState: GameState = createTestGameSt
       game: preloadedGameState,
     },
   });
-};
+}

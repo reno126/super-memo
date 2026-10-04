@@ -3,11 +3,11 @@ import userEvent from '@testing-library/user-event';
 import '../setupTests';
 import { Provider } from 'react-redux';
 import VictoryModal from '../components/VictoryModal';
-import { createMockStore, createTestGameState } from '../utils/testUtils';
+import { createTestStore, createTestGameState } from '../utils/testUtils';
 
 describe('VictoryModal Component', () => {
   it('renders victory message when game is completed', () => {
-    const store = createMockStore(
+    const store = createTestStore(
       createTestGameState({
         status: 'completed',
         moves: 10,
@@ -28,7 +28,7 @@ describe('VictoryModal Component', () => {
   });
 
   it('does not render when game is not completed', () => {
-    const store = createMockStore(
+    const store = createTestStore(
       createTestGameState({
         status: 'playing',
         moves: 5,
@@ -47,7 +47,7 @@ describe('VictoryModal Component', () => {
 
   it('handles play again button click', async () => {
     const user = userEvent.setup();
-    const store = createMockStore(
+    const store = createTestStore(
       createTestGameState({
         status: 'completed',
         moves: 10,

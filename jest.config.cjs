@@ -13,7 +13,4 @@ module.exports = {
   },
   testMatch: ['<rootDir>/src/tests/**/*.test.(ts|tsx)'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
-  testEnvironmentOptions: {
-    url: 'http://localhost',
-  },
 };

@@ -1,11 +1,11 @@
 import { render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import ScorePanel from '../components/ScorePanel';
-import { createMockStore, createTestGameState } from '../utils/testUtils';
+import { createTestStore, createTestGameState } from '../utils/testUtils';
 
 describe('ScorePanel Component', () => {
   it('displays correct moves count', () => {
-    const store = createMockStore(
+    const store = createTestStore(
       createTestGameState({
         moves: 5,
         status: 'playing',
@@ -27,7 +27,7 @@ describe('ScorePanel Component', () => {
   });
 
   it('displays formatted time correctly', () => {
-    const store = createMockStore(
+    const store = createTestStore(
       createTestGameState({
         moves: 0,
         status: 'playing',
@@ -50,7 +50,7 @@ describe('ScorePanel Component', () => {
   });
 
   it('shows zero values for new game', () => {
-    const store = createMockStore(
+    const store = createTestStore(
       createTestGameState({
         moves: 0,
         status: 'idle',
@@ -73,7 +73,7 @@ describe('ScorePanel Component', () => {
   });
 
   it('formats time with leading zeros', () => {
-    const store = createMockStore(
+    const store = createTestStore(
       createTestGameState({
         moves: 0,
         status: 'playing',

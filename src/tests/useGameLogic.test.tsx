@@ -2,17 +2,17 @@ import React from 'react';
 import { act, renderHook } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { useGameLogic } from '../hooks/useGameLogic';
-import { createMockStore } from '../utils/testUtils';
+import { createTestStore } from '../utils/testUtils';
 import { findMatchingCardPair, findNonMatchingCardPair } from './fixtures/gameFixtures';
 
-function createGameLogicProviderWrapper(store: ReturnType<typeof createMockStore>) {
+function createGameLogicProviderWrapper(store: ReturnType<typeof createTestStore>) {
   return function GameLogicProviderWrapper({ children }: { children: React.ReactNode }) {
     return <Provider store={store}>{children}</Provider>;
   };
 }
 
 function renderGameLogic() {
-  const store = createMockStore();
+  const store = createTestStore();
   const wrapper = createGameLogicProviderWrapper(store);
   const hook = renderHook(() => useGameLogic(), { wrapper });
 
