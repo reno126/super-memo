@@ -143,10 +143,11 @@ describe('Game Slice', () => {
     expect(singleSelectedState.selectedCards).toEqual([1]);
 
     const invalidIdState = gameSlice.reducer(
-      { ...initialState, cards: mockCards, selectedCards: [9998, 9999] },
+      { ...initialState, cards: mockCards, selectedCards: [9998, 9999], status: 'checking' },
       checkMatch()
     );
     expect(invalidIdState.selectedCards).toHaveLength(0);
+    expect(invalidIdState.status).toBe('playing');
   });
 
   it('should set status to completed when all cards are matched', () => {

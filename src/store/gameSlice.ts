@@ -92,6 +92,9 @@ export const gameSlice = createSlice({
 
       if (!firstCard || !secondCard) {
         state.selectedCards = [];
+        if (state.status === 'checking') {
+          state.status = 'playing';
+        }
         return;
       }
 
