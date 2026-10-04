@@ -19,5 +19,13 @@ describe('dateTimeUtils', () => {
       expect(formatTime(600)).toBe('10:00');
       expect(formatTime(3599)).toBe('59:59');
     });
+
+    it('should handle edge cases such as negative numbers and NaN', () => {
+      expect(formatTime(-10)).toBe('0:00');
+      expect(formatTime(Number.NaN)).toBe('0:00');
+      expect(formatTime(Number.POSITIVE_INFINITY)).toBe('0:00');
+      expect(formatTime(Number.NEGATIVE_INFINITY)).toBe('0:00');
+      expect(formatTime(65.7)).toBe('1:05');
+    });
   });
 });
