@@ -1,18 +1,20 @@
 import { render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import ScorePanel from '../components/ScorePanel';
-import { createMockStore } from '../utils/testUtils';
+import { createMockStore, createTestGameState } from '../utils/testUtils';
 
 describe('ScorePanel Component', () => {
   it('displays correct moves count', () => {
-    const store = createMockStore({
-      moves: 5,
-      status: 'playing',
-      timeElapsed: 0,
-      cards: [],
-      selectedCards: [],
-      boardSize: { rows: 4, cols: 4 },
-    });
+    const store = createMockStore(
+      createTestGameState({
+        moves: 5,
+        status: 'playing',
+        timeElapsed: 0,
+        cards: [],
+        selectedCards: [],
+        boardSize: { rows: 4, cols: 4 },
+      })
+    );
 
     render(
       <Provider store={store}>
@@ -25,14 +27,16 @@ describe('ScorePanel Component', () => {
   });
 
   it('displays formatted time correctly', () => {
-    const store = createMockStore({
-      moves: 0,
-      status: 'playing',
-      timeElapsed: 65,
-      cards: [],
-      selectedCards: [],
-      boardSize: { rows: 4, cols: 4 },
-    });
+    const store = createMockStore(
+      createTestGameState({
+        moves: 0,
+        status: 'playing',
+        timeElapsed: 65,
+        cards: [],
+        selectedCards: [],
+        boardSize: { rows: 4, cols: 4 },
+      })
+    );
 
     render(
       <Provider store={store}>
@@ -45,14 +49,16 @@ describe('ScorePanel Component', () => {
   });
 
   it('shows zero values for new game', () => {
-    const store = createMockStore({
-      moves: 0,
-      status: 'idle',
-      timeElapsed: 0,
-      cards: [],
-      selectedCards: [],
-      boardSize: { rows: 4, cols: 4 },
-    });
+    const store = createMockStore(
+      createTestGameState({
+        moves: 0,
+        status: 'idle',
+        timeElapsed: 0,
+        cards: [],
+        selectedCards: [],
+        boardSize: { rows: 4, cols: 4 },
+      })
+    );
 
     render(
       <Provider store={store}>
@@ -66,14 +72,16 @@ describe('ScorePanel Component', () => {
   });
 
   it('formats time with leading zeros', () => {
-    const store = createMockStore({
-      moves: 0,
-      status: 'playing',
-      timeElapsed: 305,
-      cards: [],
-      selectedCards: [],
-      boardSize: { rows: 4, cols: 4 },
-    });
+    const store = createMockStore(
+      createTestGameState({
+        moves: 0,
+        status: 'playing',
+        timeElapsed: 305,
+        cards: [],
+        selectedCards: [],
+        boardSize: { rows: 4, cols: 4 },
+      })
+    );
 
     render(
       <Provider store={store}>

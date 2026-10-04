@@ -2,15 +2,17 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import { ResetButton } from '../components/ResetButton';
-import { createMockStore } from '../utils/testUtils';
+import { createMockStore, createTestGameState } from '../utils/testUtils';
 
 describe('ResetButton Component', () => {
   it('renders correctly and dispatches resetGame when clicked', () => {
-    const store = createMockStore({
-      moves: 4,
-      status: 'playing',
-      timeElapsed: 25,
-    });
+    const store = createMockStore(
+      createTestGameState({
+        moves: 4,
+        status: 'playing',
+        timeElapsed: 25,
+      })
+    );
 
     render(
       <Provider store={store}>

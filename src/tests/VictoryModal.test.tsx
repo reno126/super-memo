@@ -3,15 +3,17 @@ import userEvent from '@testing-library/user-event';
 import '../setupTests';
 import { Provider } from 'react-redux';
 import VictoryModal from '../components/VictoryModal';
-import { createMockStore } from '../utils/testUtils';
+import { createMockStore, createTestGameState } from '../utils/testUtils';
 
 describe('VictoryModal Component', () => {
   it('renders victory message when game is completed', () => {
-    const store = createMockStore({
-      status: 'completed',
-      moves: 10,
-      timeElapsed: 65,
-    });
+    const store = createMockStore(
+      createTestGameState({
+        status: 'completed',
+        moves: 10,
+        timeElapsed: 65,
+      })
+    );
 
     render(
       <Provider store={store}>
@@ -31,11 +33,13 @@ describe('VictoryModal Component', () => {
   });
 
   it('does not render when game is not completed', () => {
-    const store = createMockStore({
-      status: 'playing',
-      moves: 5,
-      timeElapsed: 30,
-    });
+    const store = createMockStore(
+      createTestGameState({
+        status: 'playing',
+        moves: 5,
+        timeElapsed: 30,
+      })
+    );
 
     const { container } = render(
       <Provider store={store}>
@@ -47,11 +51,13 @@ describe('VictoryModal Component', () => {
   });
 
   it('handles play again button click', () => {
-    const store = createMockStore({
-      status: 'completed',
-      moves: 10,
-      timeElapsed: 60,
-    });
+    const store = createMockStore(
+      createTestGameState({
+        status: 'completed',
+        moves: 10,
+        timeElapsed: 60,
+      })
+    );
 
     render(
       <Provider store={store}>

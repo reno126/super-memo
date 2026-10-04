@@ -7,17 +7,9 @@ import {
   resetGame,
 } from '../store/gameSlice';
 import { CardData, GameState } from '../types/game';
+import { revealedCards, testCards } from './fixtures/gameFixtures';
 
 describe('Game Slice', () => {
-  const mockCards: CardData[] = [
-    { id: 1, value: 'A', state: 'hidden', position: 0 },
-    { id: 2, value: 'A', state: 'hidden', position: 1 },
-    { id: 3, value: 'B', state: 'hidden', position: 2 },
-    { id: 4, value: 'B', state: 'hidden', position: 3 },
-    { id: 5, value: 'C', state: 'hidden', position: 4 },
-    { id: 6, value: 'C', state: 'hidden', position: 5 },
-  ];
-
   const initialState: GameState = {
     cards: [],
     moves: 0,
@@ -32,8 +24,8 @@ describe('Game Slice', () => {
   });
 
   it('should initialize game with proper state', () => {
-    const state = gameSlice.reducer(initialState, initializeGame(mockCards));
-    expect(state.cards).toHaveLength(mockCards.length);
+    const state = gameSlice.reducer(initialState, initializeGame(testCards));
+    expect(state.cards).toHaveLength(testCards.length);
     expect(state.status).toBe('idle');
     expect(state.moves).toBe(0);
     expect(state.timeElapsed).toBe(0);
@@ -42,7 +34,7 @@ describe('Game Slice', () => {
 
   it('should flip a card and start the game', () => {
     const action = flipCard(1);
-    const state = gameSlice.reducer({ ...initialState, cards: mockCards }, action);
+    const state = gameSlice.reducer({ ...initialState, cards: testCards }, action);
     expect(state.status).toBe('playing');
     const flippedCard = state.cards.find(card => card.id === 1);
     expect(flippedCard?.state).toBe('revealed');
@@ -53,7 +45,7 @@ describe('Game Slice', () => {
     const state = gameSlice.reducer(
       {
         ...initialState,
-        cards: mockCards,
+        cards: testCards,
         selectedCards: [2, 3],
       },
       flipCard(1)
@@ -65,32 +57,27 @@ describe('Game Slice', () => {
   });
 
   it('should not flip a card that is already revealed or matched', () => {
-    const cardsWithRevealed: CardData[] = [
-      { id: 1, value: 'A', state: 'revealed', position: 0 },
-      { id: 2, value: 'A', state: 'matched', position: 1 },
-    ];
-
     const stateAfterRevealedClick = gameSlice.reducer(
-      { ...initialState, cards: cardsWithRevealed },
+      { ...initialState, cards: revealedCards },
       flipCard(1)
     );
     expect(stateAfterRevealedClick.selectedCards).toHaveLength(0);
 
     const stateAfterMatchedClick = gameSlice.reducer(
-      { ...initialState, cards: cardsWithRevealed },
+      { ...initialState, cards: revealedCards },
       flipCard(2)
     );
     expect(stateAfterMatchedClick.selectedCards).toHaveLength(0);
   });
 
   it('should ignore non-existent card ID on flipCard', () => {
-    const state = gameSlice.reducer({ ...initialState, cards: mockCards }, flipCard(9999));
+    const state = gameSlice.reducer({ ...initialState, cards: testCards }, flipCard(9999));
     expect(state.selectedCards).toHaveLength(0);
     expect(state.status).toBe('idle');
   });
 
   it('should increment moves when selecting second card', () => {
-    let state = gameSlice.reducer({ ...initialState, cards: mockCards }, flipCard(1));
+    let state = gameSlice.reducer({ ...initialState, cards: testCards }, flipCard(1));
     state = gameSlice.reducer(state, flipCard(2));
 
     expect(state.moves).toBe(1);
@@ -101,7 +88,7 @@ describe('Game Slice', () => {
     const state = gameSlice.reducer(
       {
         ...initialState,
-        cards: mockCards,
+        cards: testCards,
         selectedCards: [1, 2],
         status: 'checking',
       },
@@ -120,7 +107,7 @@ describe('Game Slice', () => {
     const state = gameSlice.reducer(
       {
         ...initialState,
-        cards: mockCards,
+        cards: testCards,
         selectedCards: [1, 3],
         status: 'checking',
       },
@@ -137,13 +124,13 @@ describe('Game Slice', () => {
 
   it('should safely bail out of checkMatch if less than two cards are selected or IDs are invalid', () => {
     const singleSelectedState = gameSlice.reducer(
-      { ...initialState, cards: mockCards, selectedCards: [1] },
+      { ...initialState, cards: testCards, selectedCards: [1] },
       checkMatch()
     );
     expect(singleSelectedState.selectedCards).toEqual([1]);
 
     const invalidIdState = gameSlice.reducer(
-      { ...initialState, cards: mockCards, selectedCards: [9998, 9999], status: 'checking' },
+      { ...initialState, cards: testCards, selectedCards: [9998, 9999], status: 'checking' },
       checkMatch()
     );
     expect(invalidIdState.selectedCards).toHaveLength(0);
@@ -151,7 +138,7 @@ describe('Game Slice', () => {
   });
 
   it('should set status to completed when all cards are matched', () => {
-    const matchedCards: CardData[] = mockCards.map(card => ({ ...card, state: 'matched' }));
+    const matchedCards: CardData[] = testCards.map(card => ({ ...card, state: 'matched' }));
     const state = gameSlice.reducer(
       {
         ...initialState,
@@ -186,23 +173,23 @@ describe('Game Slice', () => {
   });
 
   it('shuffles cards and preserves all card items with unique positions', () => {
-    const state = gameSlice.reducer(initialState, initializeGame(mockCards));
+    const state = gameSlice.reducer(initialState, initializeGame(testCards));
 
-    expect(state.cards).toHaveLength(mockCards.length);
-    const sortedOriginalValues = [...mockCards.map(card => card.value)].sort();
+    expect(state.cards).toHaveLength(testCards.length);
+    const sortedOriginalValues = [...testCards.map(card => card.value)].sort();
     const sortedShuffledValues = [...state.cards.map(card => card.value)].sort();
     expect(sortedShuffledValues).toEqual(sortedOriginalValues);
 
     const positions = state.cards.map(card => card.position);
     const uniquePositions = new Set(positions);
-    expect(uniquePositions.size).toBe(mockCards.length);
+    expect(uniquePositions.size).toBe(testCards.length);
   });
 
   it('does reset game provide proper state and reset all cards to hidden', () => {
     const state = gameSlice.reducer(
       {
         ...initialState,
-        cards: mockCards.map(card => ({ ...card, state: 'matched' })),
+        cards: testCards.map(card => ({ ...card, state: 'matched' })),
         moves: 5,
         timeElapsed: 30,
         status: 'completed',
@@ -215,7 +202,7 @@ describe('Game Slice', () => {
     expect(state.timeElapsed).toBe(0);
     expect(state.status).toBe('idle');
     expect(state.selectedCards).toHaveLength(0);
-    expect(state.cards).toHaveLength(mockCards.length);
+    expect(state.cards).toHaveLength(testCards.length);
     expect(state.cards.every(card => card.state === 'hidden')).toBe(true);
   });
 });

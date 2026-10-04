@@ -3,6 +3,16 @@ import { renderHook, act } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { useGameLogic } from '../hooks/useGameLogic';
 import { createMockStore } from '../utils/testUtils';
+import { findMatchingCardPair, findNonMatchingCardPair } from './fixtures/gameFixtures';
+
+function createGameLogicProviderWrapper() {
+  const store = createMockStore();
+  const wrapper = ({ children }: { children: React.ReactNode }) => (
+    <Provider store={store}>{children}</Provider>
+  );
+
+  return wrapper;
+}
 
 describe('useGameLogic Hook', () => {
   beforeEach(() => {
@@ -13,11 +23,8 @@ describe('useGameLogic Hook', () => {
     jest.useRealTimers();
   });
 
-  const wrapper = ({ children }: { children: React.ReactNode }) => (
-    <Provider store={createMockStore()}>{children}</Provider>
-  );
-
   it('initializes game state correctly', () => {
+    const wrapper = createGameLogicProviderWrapper();
     const { result } = renderHook(() => useGameLogic(), { wrapper });
 
     expect(result.current.cards).toHaveLength(16);
@@ -29,6 +36,7 @@ describe('useGameLogic Hook', () => {
   });
 
   it('handles card click correctly', () => {
+    const wrapper = createGameLogicProviderWrapper();
     const { result } = renderHook(() => useGameLogic(), { wrapper });
 
     const firstCard = result.current.cards[0];
@@ -44,37 +52,56 @@ describe('useGameLogic Hook', () => {
     }
   });
 
-  it('updates game status when selecting two cards and resolves match after 1 second', () => {
+  it('matches a selected pair after one second', () => {
+    const wrapper = createGameLogicProviderWrapper();
     const { result } = renderHook(() => useGameLogic(), { wrapper });
+    const [firstCard, secondCard] = findMatchingCardPair(result.current.cards);
 
-    const firstCard = result.current.cards[0];
-    const secondCard = result.current.cards[1];
-    expect(firstCard).toBeDefined();
-    expect(secondCard).toBeDefined();
+    act(() => {
+      result.current.handleCardClick(firstCard);
+      result.current.handleCardClick(secondCard);
+    });
 
-    if (firstCard && secondCard) {
-      act(() => {
-        result.current.handleCardClick(firstCard);
-      });
-      act(() => {
-        result.current.handleCardClick(secondCard);
-      });
+    expect(result.current.selectedCards).toHaveLength(2);
+    expect(result.current.moves).toBe(1);
+    expect(result.current.status).toBe('checking');
 
-      expect(result.current.selectedCards).toHaveLength(2);
-      expect(result.current.moves).toBe(1);
-      expect(result.current.status).toBe('checking');
+    act(() => {
+      jest.advanceTimersByTime(1000);
+    });
 
-      // Fast-forward 1000ms delay for checkMatch
-      act(() => {
-        jest.advanceTimersByTime(1000);
-      });
+    const matchedCardIds = new Set([firstCard.id, secondCard.id]);
+    const matchedCards = result.current.cards.filter(card => matchedCardIds.has(card.id));
+    expect(matchedCards.every(card => card.state === 'matched')).toBe(true);
+    expect(result.current.selectedCards).toHaveLength(0);
+    expect(result.current.status).toBe('playing');
+  });
 
-      expect(result.current.selectedCards).toHaveLength(0);
-      expect(result.current.status).toBe('playing');
-    }
+  it('hides a selected non-matching pair after one second', () => {
+    const wrapper = createGameLogicProviderWrapper();
+    const { result } = renderHook(() => useGameLogic(), { wrapper });
+    const [firstCard, secondCard] = findNonMatchingCardPair(result.current.cards);
+
+    act(() => {
+      result.current.handleCardClick(firstCard);
+      result.current.handleCardClick(secondCard);
+    });
+
+    expect(result.current.status).toBe('checking');
+
+    act(() => {
+      jest.advanceTimersByTime(1000);
+    });
+
+    const nonMatchingCardIds = new Set([firstCard.id, secondCard.id]);
+    const nonMatchingCards = result.current.cards.filter(card => nonMatchingCardIds.has(card.id));
+    expect(nonMatchingCards.every(card => card.state === 'hidden')).toBe(true);
+    expect(result.current.selectedCards).toHaveLength(0);
+    expect(result.current.status).toBe('playing');
   });
 
   it('handles timer updates correctly during play', () => {
+    const wrapper = createGameLogicProviderWrapper();
     const { result } = renderHook(() => useGameLogic(), { wrapper });
 
     const firstCard = result.current.cards[0];
@@ -102,6 +129,7 @@ describe('useGameLogic Hook', () => {
   });
 
   it('resets game state correctly', () => {
+    const wrapper = createGameLogicProviderWrapper();
     const { result } = renderHook(() => useGameLogic(), { wrapper });
 
     const firstCard = result.current.cards[0];
@@ -124,6 +152,7 @@ describe('useGameLogic Hook', () => {
   });
 
   it('cleans up timers when unmounting', () => {
+    const wrapper = createGameLogicProviderWrapper();
     const { result, unmount } = renderHook(() => useGameLogic(), { wrapper });
 
     const firstCard = result.current.cards[0];
