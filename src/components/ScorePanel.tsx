@@ -20,7 +20,7 @@ export function ScorePanel() {
           >
             Ruchy
           </h2>
-          <p className="text-2xl font-bold text-blue-600" data-testid="moves-value">
+          <p className="text-2xl font-bold text-brand-purple" data-testid="moves-value">
             {moves}
           </p>
         </div>
@@ -33,7 +33,7 @@ export function ScorePanel() {
           >
             Czas
           </h2>
-          <p className="text-2xl font-bold text-blue-600" data-testid="time-value">
+          <p className="text-2xl font-bold text-brand-purple" data-testid="time-value">
             {formatTime(timeElapsed)}
           </p>
         </div>

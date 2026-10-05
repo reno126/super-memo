@@ -14,11 +14,11 @@ export const Card = React.memo(function Card({ card, onCardClick, disabled }: Ca
 
     switch (card.state) {
       case 'hidden':
-        return `${baseClasses} bg-blue-500 text-transparent`;
+        return `${baseClasses} bg-brand-cyan text-transparent`;
       case 'revealed':
-        return `${baseClasses} bg-white text-blue-900 border-2 border-blue-500`;
+        return `${baseClasses} bg-white text-brand-ink border-2 border-brand-cyan`;
       case 'matched':
-        return `${baseClasses} bg-green-100 text-green-900 border-2 border-green-500`;
+        return `${baseClasses} bg-brand-purple/10 text-brand-ink border-2 border-brand-purple`;
       default:
         return baseClasses;
     }

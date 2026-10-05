@@ -21,7 +21,7 @@ function VictoryContent() {
       <div className="bg-white rounded-lg p-8 max-w-sm w-full mx-4 shadow-xl" role="document">
         <div className="transform transition-all duration-200">
           <h2
-            className="text-2xl font-bold text-center text-green-600 mb-4"
+            className="text-2xl font-bold text-center text-brand-purple mb-4"
             id="victory-title"
             data-testid="victory-title"
           >
@@ -38,7 +38,7 @@ function VictoryContent() {
           </div>
 
           <button
-            className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+            className="w-full bg-brand-purple hover:bg-brand-purple/90 text-white font-bold py-2 px-6 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-brand-cyan focus:ring-opacity-50"
             onClick={handlePlayAgain}
             data-testid="play-again-button"
           >
