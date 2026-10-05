@@ -7,6 +7,8 @@ declare global {
       toHaveClass: (className: string) => R;
       toHaveAttribute: (attr: string, value?: string) => R;
       toBeInTheDocument: () => R;
+      toHaveStyle: (styles: Record<string, string> | string) => R;
+      toBeDisabled: () => R;
     }
   }
 }
