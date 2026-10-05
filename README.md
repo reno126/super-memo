@@ -6,7 +6,7 @@
 
 [**Play the live demo**](https://reno126.github.io/super-memo/)
 
-Match all eight pairs, keep an eye on your move count, and try to beat your time. The board works with mouse, keyboard, and touch input.
+Match all eight pairs, keep an eye on your move count, and try to beat your time.
 
 > 🧪 **Why this project?** Super Memo is a demo app for exploring the advantages of **Redux Toolkit**: keeping game state in one place, expressing updates as clear actions, and making state transitions straightforward to test. The game UI stays intentionally small so the state-management approach is easy to follow.
 
