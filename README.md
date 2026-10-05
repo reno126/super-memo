@@ -1,42 +1,83 @@
-# Memory Card Game
+<div align="center">
 
-A memory card matching game built with React.
-The main purpose of this application is to test the advantages of using **redux-toolkit**. Therefore, all the rest of the code is very simple and obvious. By separating logic and state from the rest of the application, it is possible to conveniently test the main functionalities.
+# Super Memo
 
-## Live demo at https://reno126.github.io/super-memo/
+### A small, responsive memory game built with React, TypeScript, and Redux Toolkit.
 
-## Technologies Used
+[**Play the live demo**](https://reno126.github.io/super-memo/)
 
-- React
-- TypeScript
-- Redux Toolkit
-- Tailwind CSS
-- Jest
-- PNPM
+Match all eight pairs, keep an eye on your move count, and try to beat your time. The board works with mouse, keyboard, and touch input.
 
-## State Management with Redux Toolkit
+> 🧪 **Why this project?** Super Memo is a demo app for exploring the advantages of **Redux Toolkit**: keeping game state in one place, expressing updates as clear actions, and making state transitions straightforward to test. The game UI stays intentionally small so the state-management approach is easy to follow.
 
-### Why Redux Toolkit?
+</div>
 
-Redux Toolkit is the official, opinionated toolset for efficient Redux development. Its main advantages:
+---
 
-1. **Simplify Store Setup**
-2. **Reduce Boilerplate Code**
-3. **Full TypeScript support out of the box**
+## 🎮 Features
 
-## Installation
+- **Sixteen shuffled cards** arranged as eight matching pairs.
+- **Move counter and timer** update as you play.
+- **Match feedback** reveals cards briefly before hiding a non-matching pair.
+- **Quick restart** starts a fresh, shuffled game.
+- **Completion dialog** shows your final time and number of moves.
+- **Responsive layout** keeps the board usable on phones, tablets, and desktops.
+- **Accessible controls** use native buttons, focus styles, and descriptive card labels.
 
-1. Clone the repository
+## 🧰 Built with
 
-2. Install dependencies
-   pnpm install
+| Tool | Role |
+| --- | --- |
+| React 18 | Component-based user interface |
+| TypeScript | Typed game data and component props |
+| Redux Toolkit + React Redux | Centralized game state and actions |
+| Tailwind CSS | Responsive utility styling |
+| Jest + React Testing Library | State, hook, and component tests |
 
-3. Start the development server
-   pnpm start
+## 🚀 Run locally
 
-To run the test suite:
-pnpm test
+You’ll need Node.js and [pnpm](https://pnpm.io/installation).
 
-## License
+```bash
+git clone https://github.com/reno126/super-memo.git
+cd super-memo
+pnpm install
+pnpm start
+```
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+The development server prints its local URL when it starts.
+
+## 📋 Useful commands
+
+| Command | Description |
+| --- | --- |
+| `pnpm start` | Start the local development server |
+| `pnpm test` | Run the test suite in watch mode |
+| `pnpm test --watchAll=false` | Run the test suite once |
+| `pnpm run build` | Create a production build in `build/` |
+| `pnpm run lint` | Run ESLint on the source files |
+| `pnpm run prettier` | Check formatting for configured source files |
+| `pnpm run deploy` | Build and publish the app to GitHub Pages |
+
+## 🗂️ Project structure
+
+```text
+src/
+├── components/       # Game board, cards, score, and dialogs
+├── data/             # Initial card set
+├── hooks/            # Game timer and interaction orchestration
+├── store/            # Redux store, typed hooks, and game slice
+├── tests/            # Unit and component tests
+├── types/            # Shared game types
+└── utils/            # Formatting and test helpers
+```
+
+The Redux slice owns the game state and transitions. The `useGameLogic` hook connects those actions to the timer and card interactions, while the UI components render the current state.
+
+## 🧠 What this demo explores
+
+This project is a compact example of separating game state from presentation. It demonstrates Redux Toolkit reducers, typed React components, a custom hook for coordinating timed interactions, and behavior-focused component tests.
+
+## 📄 License
+
+The project is described as MIT-licensed. See the repository’s license file for the terms.
