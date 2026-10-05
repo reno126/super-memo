@@ -1,4 +1,5 @@
 {
+  "packages": ["."],
   "name": "super-memo",
   "homepage": "https://reno126.github.io/super-memo",
   "version": "0.1.0",
